@@ -14,7 +14,9 @@ import requests
 from .scrap import Scrap, url_parse
 from .config import Config
 from .exception import (
-    NotFoundStationException
+    NotFoundStationException,
+    NotFoundPrevTransit,
+    NotFoundNextTransit
 )
 
 class Req(Scrap, Config):
@@ -64,3 +66,33 @@ class Req(Scrap, Config):
         self.RESULT_PARAMS['hh'] = '{:0=2}'.format(dt.hour)
         self.RESULT_PARAMS['m1'] = minites[0]
         self.RESULT_PARAMS['m2'] = minites[1]
+
+    def get_prev(self):
+        if self.prev_info is None:
+            raise NotFoundPrevTransit('一本前の情報がありません。')
+        res = requests.get(
+            url=self.HOST + self.prev_info['path'],
+            params=self.prev_info['params']
+        )
+        result = {
+            'from': self.RESULT_PARAMS['from'],
+            'to': self.RESULT_PARAMS['to'],
+            'datetime': self.dt,
+            **self.scrap_result(res.text)
+        }
+        return result
+
+    def get_next(self):
+        if self.next_info is None:
+            raise NotFoundNextTransit('一本後の情報がありません。')
+        res = requests.get(
+            url=self.HOST + self.next_info['path'],
+            params=self.next_info['params']
+        )
+        result = {
+            'from': self.RESULT_PARAMS['from'],
+            'to': self.RESULT_PARAMS['to'],
+            'datetime': self.dt,
+            **self.scrap_result(res.text)
+        }
+        return result

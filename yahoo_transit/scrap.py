@@ -72,6 +72,8 @@ class Scrap:
     def set_prev_info(self):
         li_prev = self.soup.find('li', class_='prev')
         prev_url = li_prev.find('a').get('href')
+        if prev_url is None:
+            return
         parse_result = url_parse.urlparse(prev_url)
         query_params = dict(url_parse.parse_qsl(parse_result.query))
         self.prev_info = {
@@ -82,6 +84,8 @@ class Scrap:
     def set_next_info(self):
         li_next = self.soup.find('li', class_='next')
         next_url = li_next.find('a').get('href')
+        if next_url is None:
+            return
         parse_result = url_parse.urlparse(next_url)
         query_params = dict(url_parse.parse_qsl(parse_result.query))
         self.next_info = {

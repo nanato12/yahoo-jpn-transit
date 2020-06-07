@@ -8,5 +8,15 @@ Exception class
 
 class NotFoundStationException(Exception):
     """
-        result search not found station
+        search result not found station
+    """
+
+class NotFoundPrevTransit(Exception):
+    """
+        search result not found prev transit
+    """
+
+class NotFoundNextTransit(Exception):
+    """
+        search result not found next transit
     """

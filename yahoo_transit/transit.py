@@ -26,8 +26,20 @@ class Transit:
 
     def search(self, from_, to, dt=None):
         """
-            transit search
+            search transit
         """
         if dt is None:
             dt = datetime.now()
         return self.req.get_result(from_, to, dt)
+
+    def get_prev_data(self):
+        """
+            get prev transit
+        """
+        return self.req.get_prev()
+
+    def get_next_data(self):
+        """
+            get next transit
+        """
+        return self.req.get_next()
